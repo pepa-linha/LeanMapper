@@ -1,0 +1,5 @@
+# php -d --memory_limit=1024M vendor/bin/phpstan.phar analyse -c tools/phpstan.neon -l 1 src
+
+parameters:
+
+    ignoreErrors:
