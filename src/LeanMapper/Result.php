@@ -783,9 +783,9 @@ class Result implements \Iterator
             throw new InvalidStateException('Cannot get referenced Result for detached Result.');
         }
         $key = "$table($viaColumn)";
+        $primaryKey = $this->mapper->getPrimaryKey($table);
         if (isset($this->referenced[$forcedKey = $key . '#' . self::KEY_FORCED])) {
             $ids = $this->extractIds($viaColumn);
-            $primaryKey = $this->mapper->getPrimaryKey($table);
 
             foreach ($this->referenced[$forcedKey] as $filteringResult) {
                 if ($filteringResult->isValidFor($ids, $filtering->getArgs())) {
@@ -800,7 +800,6 @@ class Result implements \Iterator
             if (!isset($this->referenced[$key])) {
                 if (!isset($ids)) {
                     $ids = $this->extractIds($viaColumn);
-                    $primaryKey = $this->mapper->getPrimaryKey($table);
                 }
                 $data = [];
                 if (!empty($ids)) {
@@ -816,7 +815,6 @@ class Result implements \Iterator
         // $filtering !== null
         if (!isset($ids)) {
             $ids = $this->extractIds($viaColumn);
-            $primaryKey = $this->mapper->getPrimaryKey($table);
         }
         $statement = $this->createTableSelection($table, $ids)->where('%n.%n IN %in', $table, $primaryKey, $ids);
         $filteringResult = $this->applyFiltering($statement, $filtering);

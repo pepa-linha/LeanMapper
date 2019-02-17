@@ -318,8 +318,8 @@ class PropertyFactory
         IMapper $mapper = null
     ) {
         $flags = null;
+        $strategy = Result::STRATEGY_IN; // default strategy
         if ($relationshipType !== 'hasOne') {
-            $strategy = Result::STRATEGY_IN; // default strategy
             if ($definition !== null) {
                 list($definition, $flags) = self::parseRelationshipFlags($definition);
 
