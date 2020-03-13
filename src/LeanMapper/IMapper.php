@@ -9,6 +9,8 @@
  * license.md that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace LeanMapper;
 
 /**
@@ -91,7 +93,7 @@ interface IMapper
      * @param string|null $relationshipName
      * @return string
      */
-    public function getRelationshipColumn($sourceTable, $targetTable/*, $relationshipName = null*/);
+    public function getRelationshipColumn($sourceTable, $targetTable, $relationshipName = null);
 
 
 

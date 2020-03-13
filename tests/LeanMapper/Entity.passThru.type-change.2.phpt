@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Tester\Assert;
 
 require_once __DIR__ . '/../bootstrap.php';
@@ -15,13 +17,13 @@ class Foo extends LeanMapper\Entity
 {
     protected function jsonEncodeData($data)
     {
-        return !empty($data) ? json_encode($data) : NULL;
+        return !empty($data) ? json_encode($data) : null;
     }
 
 
     protected function jsonDecodeData($data)
     {
-        return !empty($data) ? json_decode($data, TRUE) : [];
+        return !empty($data) ? json_decode($data, true) : [];
     }
 }
 

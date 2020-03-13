@@ -9,6 +9,8 @@
  * license.md that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace LeanMapper;
 
 use LeanMapper\Exception\InvalidStateException;
@@ -21,11 +23,21 @@ use LeanMapper\Exception\InvalidStateException;
 class DefaultMapper implements IMapper
 {
 
-    /** @var string */
-    protected $defaultEntityNamespace = 'Model\Entity';
+    /** @var string|null */
+    protected $defaultEntityNamespace;
 
     /** @var string */
     protected $relationshipTableGlue = '_';
+
+
+
+    /**
+     * @param  string|null
+     */
+    public function __construct($defaultEntityNamespace = 'Model\Entity')
+    {
+        $this->defaultEntityNamespace = $defaultEntityNamespace;
+    }
 
 
 
@@ -92,10 +104,9 @@ class DefaultMapper implements IMapper
     /**
      * {@inheritdoc}
      */
-    public function getRelationshipColumn($sourceTable, $targetTable/*, $relationshipName = null*/)
+    public function getRelationshipColumn($sourceTable, $targetTable, $relationshipName = null)
     {
-        $relationshipName = (func_num_args() === 3) ? func_get_arg(2) : null;
-        return (isset($relationshipName) ? $relationshipName : $targetTable) . '_' . $this->getPrimaryKey($targetTable);
+        return ($relationshipName !== NULL ? $relationshipName : $targetTable) . '_' . $this->getPrimaryKey($targetTable);
     }
 
 

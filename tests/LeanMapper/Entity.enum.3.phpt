@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PDO as DbLayer;
 use Tester\Assert;
 
@@ -31,14 +33,14 @@ $author = new Author;
 $author->state = Author::STATE_ACTIVE;
 Assert::equal(Author::STATE_ACTIVE, $author->state);
 
-$author->state = NULL;
-Assert::equal(NULL, $author->state);
+$author->state = null;
+Assert::equal(null, $author->state);
 
 $author->finalState = Author::STATE_DELETED;
 Assert::equal(Author::STATE_DELETED, $author->finalState);
 
 Assert::exception(function () use ($author) {
 
-    $author->finalState = NULL;
+    $author->finalState = null;
 
 }, 'LeanMapper\Exception\InvalidValueException', "Property 'finalState' in entity Author cannot be null.");

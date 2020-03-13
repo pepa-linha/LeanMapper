@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use LeanMapper\Connection;
 use LeanMapper\DefaultMapper;
 use LeanMapper\Entity;
@@ -44,7 +46,10 @@ class AuthorContract extends Entity
 class Mapper extends DefaultMapper
 {
 
-    protected $defaultEntityNamespace = null;
+    public function __construct()
+    {
+        $this->defaultEntityNamespace = null;
+    }
 
 
 
@@ -71,7 +76,7 @@ class Mapper extends DefaultMapper
 
 
 
-    public function getRelationshipColumn($sourceTable, $targetTable/*, $relationshipName = null*/)
+    public function getRelationshipColumn($sourceTable, $targetTable, $relationshipName = null)
     {
         if ($sourceTable === 'authorcontract' and $targetTable === 'authordetail') {
             return 'author_id';
@@ -79,7 +84,6 @@ class Mapper extends DefaultMapper
         if ($sourceTable === 'authordetail' and $targetTable === 'author') {
             return 'author_id';
         }
-        $relationshipName = (func_num_args() === 3) ? func_get_arg(2) : null;
         return parent::getRelationshipColumn($sourceTable, $targetTable, $relationshipName);
     }
 

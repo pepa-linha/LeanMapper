@@ -9,6 +9,8 @@
  * license.md that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace LeanMapper;
 
 use Closure;
@@ -72,17 +74,16 @@ class Fluent extends \Dibi\Fluent
      * Exports current state
      *
      * @param string|null $clause
-     * @param array|null $args
      * @return array
      */
-    public function _export(?string $clause = null, array $args = null): array
+    public function _export(string $clause = null, array $args = []): array
     {
         $args = func_get_args();
 
         $reflector = new \ReflectionClass(get_class($this));
         $parent = $reflector->getParentClass();
         $method = $parent->getMethod('_export');
-        $method->setAccessible('true');
+        $method->setAccessible(true);
         return $method->invokeArgs($this, $args);
     }
 

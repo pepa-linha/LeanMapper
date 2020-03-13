@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $autoload = __DIR__ . '/../temp/code-checker/vendor/autoload.php';
 
 if (@!include $autoload) {
@@ -25,8 +27,8 @@ set_time_limit(0);
 $checker = new Nette\CodeChecker\Checker;
 $tasks = Nette\CodeChecker\Tasks::class;
 
-$checker->readOnly = TRUE;
-$checker->showProgress = FALSE;
+$checker->readOnly = true;
+$checker->showProgress = false;
 
 $checker->addTask([$tasks, 'controlCharactersChecker']);
 $checker->addTask([$tasks, 'bomFixer']);
@@ -35,6 +37,7 @@ $checker->addTask([$tasks, 'phpSyntaxChecker'], '*.php,*.phpt');
 $checker->addTask([$tasks, 'invalidPhpDocChecker'], '*.php,*.phpt');
 $checker->addTask([$tasks, 'shortArraySyntaxFixer'], '*.php,*.phpt');
 
+$checker->addTask([$tasks, 'strictTypesDeclarationChecker'], '*.php,*.phpt');
 $checker->addTask([$tasks, 'newlineNormalizer'], '!*.sh');
 
 $checker->addTask([$tasks, 'invalidDoubleQuotedStringChecker'], '*.php,*.phpt');

@@ -27,6 +27,7 @@
 		"nette/di": "~2.2",
 		"nette/robot-loader": "~2.2",
 		"nette/tester": "~1.0",
-		"phpstan/phpstan-shim": "^0.11.2"
+		"phpstan/phpstan-shim": "^0.11.2",
+		"tracy/tracy": "~2.2"
 	}
 }

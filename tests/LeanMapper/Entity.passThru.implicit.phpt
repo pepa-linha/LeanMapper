@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use LeanMapper\Reflection\Property;
 use Tester\Assert;
 
@@ -25,22 +27,22 @@ class Book extends LeanMapper\Entity
             return $this->convertJson($value);
         }
 
-        if (is_a($type, 'DateTime', TRUE)) {
+        if (is_a($type, 'DateTime', true)) {
             if ($value instanceof DateTime) {
                 return clone $value;
             }
             return new DateTime($value);
         }
 
-        if (is_a($type, 'Uuid', TRUE)) {
+        if (is_a($type, 'Uuid', true)) {
             return ($value instanceof Uuid) ? $value : new Uuid($value);
         }
 
-        if (is_a($type, 'Time', TRUE)) {
+        if (is_a($type, 'Time', true)) {
             return ($value instanceof Time) ? $value->getTime() : new Time($value);
         }
 
-        if (!$property->isBasicType() && is_a($type, 'Integer', TRUE)) { // is_a() accepts 'integer' as class name
+        if (!$property->isBasicType() && is_a($type, 'Integer', true)) { // is_a() accepts 'integer' as class name
             return $this->convertToInteger($value);
         }
 
@@ -56,22 +58,22 @@ class Book extends LeanMapper\Entity
             return $this->convertJson($value);
         }
 
-        if (is_a($type, 'DateTime', TRUE)) {
+        if (is_a($type, 'DateTime', true)) {
             if ($value instanceof DateTime) {
                 return $value->format('Y-m-d');
             }
             return $value;
         }
 
-        if (is_a($type, 'Uuid', TRUE)) {
+        if (is_a($type, 'Uuid', true)) {
             return ($value instanceof Uuid) ? $value : new Uuid($value);
         }
 
-        if (is_a($type, 'Time', TRUE)) {
+        if (is_a($type, 'Time', true)) {
             return ($value instanceof Time) ? $value->getTime() : new Time($value);
         }
 
-        if (!$property->isBasicType() && is_a($type, 'Integer', TRUE)) { // is_a() accepts 'integer' as class name
+        if (!$property->isBasicType() && is_a($type, 'Integer', true)) { // is_a() accepts 'integer' as class name
             return $this->convertToInteger($value);
         }
 
@@ -149,7 +151,7 @@ class Time
 
     public function getTime()
     {
-        return str_pad($this->hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad($this->minute, 2, '0', STR_PAD_LEFT);
+        return str_pad((string) $this->hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad((string) $this->minute, 2, '0', STR_PAD_LEFT);
     }
 }
 

@@ -9,6 +9,8 @@
  * license.md that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace LeanMapper\Reflection;
 
 use LeanMapper\Exception\InvalidAnnotationException;
@@ -112,7 +114,7 @@ class PropertyFactory
 
             foreach ($flagMatches as $match) {
                 if ($match[1] === 'belongsToOne' || $match[1] === 'belongsToMany') {
-                    $isWritable = FALSE;
+                    $isWritable = false;
                     break;
                 }
             }

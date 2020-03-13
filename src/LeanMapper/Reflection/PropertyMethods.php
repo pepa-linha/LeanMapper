@@ -9,6 +9,8 @@
  * license.md that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace LeanMapper\Reflection;
 
 use LeanMapper\Exception\InvalidAnnotationException;
@@ -24,14 +26,14 @@ class PropertyMethods
     /** @var string */
     private $getter;
 
-    /** @var string|NULL */
+    /** @var string|null */
     private $setter;
 
 
 
     /**
      * @param  string
-     * @param  string|NULL
+     * @param  string|null
      */
     public function __construct($getter, $setter)
     {
@@ -76,7 +78,7 @@ class PropertyMethods
     {
         $ucName = ucfirst($propertyName);
         $getter = 'get' . $ucName;
-        $setter = NULL;
+        $setter = null;
         if ($isWritable) {
             $setter = 'set' . $ucName;
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use LeanMapper\Connection;
 use LeanMapper\DefaultMapper;
 use LeanMapper\Entity;
@@ -34,8 +36,8 @@ class ResultDummyDriver implements \Dibi\ResultDriver
 
     public function fetch(bool $assoc): ?array
     {
-        $raw = array_slice($this->data, $this->position, 1, TRUE);
-        $data = reset($raw);
+        $raw = array_slice($this->data, $this->position, 1, true);
+        $data = is_array($raw) && !empty($raw) ? reset($raw) : [];
         $this->position++;
 
         if (!is_array($raw)) {
@@ -102,8 +104,7 @@ class PostgreDummyDriver extends \Dibi\Drivers\PostgreDriver
     {
     }
 
-
-    public function query(string $sql): ?\Dibi\ResultDriver
+    public function query(string $sql): ?Dibi\ResultDriver
     {
         $sql = trim($sql);
         if (isset($this->resultData[$sql])) {
