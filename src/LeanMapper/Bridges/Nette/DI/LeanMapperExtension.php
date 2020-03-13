@@ -9,48 +9,36 @@ use Nette\Loaders\RobotLoader;
 
 class LeanMapperExtension extends Nette\DI\CompilerExtension
 {
-
     public $defaults = [
         'db' => [],
         'profiler' => true,
-        'scanDirs' => null,
+        'scanDirs' => [],
         'logFile' => null,
     ];
 
-
-
-    /**
-     * Returns extension configuration.
-     * @return array
-     */
-    public function getConfig()
+    public function __construct(array $scanDirs = null)
     {
-        $container = $this->getContainerBuilder();
-        $this->defaults['scanDirs'] = $container->expand('%appDir%');
-
-        return parent::getConfig($this->defaults);
+        $this->defaults['scanDirs'] = (array) $scanDirs;
     }
-
-
 
     public function loadConfiguration()
     {
         $container = $this->getContainerBuilder();
-        $config = $this->getConfig();
+        $config = $this->validateConfig($this->defaults);
 
         $index = 1;
         foreach ($this->findRepositories($config) as $repositoryClass) {
-            $container->addDefinition($this->prefix('table.' . $index++))->setClass($repositoryClass);
+            $container->addDefinition($this->prefix('table.' . $index++))->setType($repositoryClass);
         }
 
         $container->addDefinition($this->prefix('mapper'))
-            ->setClass('LeanMapper\DefaultMapper');
+            ->setType('LeanMapper\DefaultMapper');
 
         $container->addDefinition($this->prefix('entityFactory'))
-            ->setClass('LeanMapper\DefaultEntityFactory');
+            ->setType('LeanMapper\DefaultEntityFactory');
 
         $connection = $container->addDefinition($this->prefix('connection'))
-            ->setClass('LeanMapper\Connection', [$config['db']]);
+            ->setFactory('LeanMapper\Connection', [$config['db']]);
 
         if (isset($config['db']['flags'])) {
             $flags = 0;
@@ -61,11 +49,11 @@ class LeanMapperExtension extends Nette\DI\CompilerExtension
         }
 
         if (class_exists('Tracy\Debugger') && $container->parameters['debugMode'] && $config['profiler']) {
-            $panel = $container->addDefinition($this->prefix('panel'))->setClass('Dibi\Bridges\Tracy\Panel');
+            $panel = $container->addDefinition($this->prefix('panel'))->setType('Dibi\Bridges\Tracy\Panel');
             $connection->addSetup([$panel, 'register'], [$connection]);
             if ($config['logFile']) {
                 $fileLogger = $container->addDefinition($this->prefix('fileLogger'))
-                    ->setClass('Dibi\Loggers\FileLogger', [$config['logFile']]);
+                    ->setFactory('Dibi\Loggers\FileLogger', [$config['logFile']]);
                 $connection->addSetup('$service->onEvent[] = ?', [
                     [$fileLogger, 'logEvent'],
                 ]);
@@ -73,17 +61,15 @@ class LeanMapperExtension extends Nette\DI\CompilerExtension
         }
     }
 
-
-
     private function findRepositories($config)
     {
         $classes = [];
 
         if ($config['scanDirs']) {
             $robot = new RobotLoader;
-            $robot->setCacheStorage(new Nette\Caching\Storages\DevNullStorage);
+            $robot->setTempDirectory(__DIR__ . '/temp');
             $robot->addDirectory($config['scanDirs']);
-            $robot->acceptFiles = '*.php';
+            $robot->acceptFiles = ['*.php'];
             $robot->rebuild();
             $classes = array_keys($robot->getIndexedClasses());
         }
