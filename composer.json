@@ -20,14 +20,14 @@
 	},
 	"require": {
 		"php": ">= 7.1",
-		"dibi/dibi": "~4.0.1"
+		"dibi/dibi": "^4.1"
 	},
 	"require-dev": {
 		"nette/bootstrap": "^3.0",
 		"nette/di": "^3.0",
 		"nette/robot-loader": "^3.0",
 		"nette/tester": "^2.1",
-		"phpstan/phpstan-shim": "^0.11.2",
+		"phpstan/phpstan": "^0.12",
 		"tracy/tracy": "^2.7"
 	}
 }
